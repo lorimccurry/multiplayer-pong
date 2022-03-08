@@ -23,7 +23,7 @@ io.on('connection', (socket) => {
 
     // 2nd player will always be the referee
     // we emit that to all players
-    if (readyPlayerCount === 2) {
+    if (readyPlayerCount % 2 === 0) {
       io.emit('startGame', socket.id);
     }
   });
@@ -34,5 +34,9 @@ io.on('connection', (socket) => {
 
   socket.on('ballMove', (ballData) => {
     socket.broadcast.emit('ballMove', ballData);
+  });
+
+  socket.on('disconnect', (reason) => {
+    console.log(`Client with ${socket.id} disconnected: ${reason}`);
   });
 });
